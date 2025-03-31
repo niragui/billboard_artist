@@ -2,6 +2,7 @@
 from .charts_parser import ChartParser
 from .id_finder import ArtistIdFinder
 from .artist_website import ArtistWebsite
+from .exceptions import MissingChart
 
 
 class ArchiveChecker():
@@ -21,7 +22,13 @@ class ArchiveChecker():
         """
         artist_id = self.id_parser.get_artist(artist)
 
-        chart_id = self.chart_parser.get_chart_id(chart)
+        try:
+            chart_id = self.chart_parser.get_chart_id(chart)
+        except MissingChart as e:
+            if not self.chart_parser.is_saved_id(chart.upper()):
+                raise e
+            else:
+                chart_id = chart.upper()
 
         website = ArtistWebsite(artist_id, chart_id)
 

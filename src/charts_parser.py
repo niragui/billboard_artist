@@ -66,3 +66,13 @@ class ChartParser():
             raise MissingChart(f"Chart Couldn't Be Found [{chart}]")
 
         return chart_id
+
+    def is_saved_id(self,
+                    chart_id: str):
+        """
+        Check if the send id is a valid saved chart_id
+
+        Parameters:
+            - chart_id: Chart ID to check if existing.
+        """
+        return chart_id in self.charts.values
