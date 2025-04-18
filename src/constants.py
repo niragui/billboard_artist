@@ -1,0 +1,1 @@
+BASE_ARTIST_URL = "https://www.billboard.com/artist/"

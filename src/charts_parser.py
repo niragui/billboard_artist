@@ -23,6 +23,10 @@ class ChartParser():
                 self.charts = json.load(f)
         except json.JSONDecodeError:
             raise InvalidFile(f"Charts File Not JSON Formatted [{file}]")
+    
+        self.ids = {}
+        for chart, chart_id in self.charts.items():
+            self.ids[chart_id] = chart
 
     def update_chart(self,
                      chart: str,
@@ -46,6 +50,7 @@ class ChartParser():
             return
 
         self.charts[chart] = chart_id
+        self.ids[chart_id] = chart
 
         with open(self.file, "w") as f:
             f.write(json.dumps(self.charts, indent=4))
@@ -75,4 +80,16 @@ class ChartParser():
         Parameters:
             - chart_id: Chart ID to check if existing.
         """
-        return chart_id in self.charts.values
+        return chart_id in self.charts.values()
+
+    def get_chart_name(self,
+                       chart_id: str):
+        """
+        Given a chart id, it returns the name of the chart
+
+        Parameters:
+            - chart_id: Chart ID to get the name from
+        """
+        chart_name = self.ids.get(chart_id, None)
+
+        return chart_name

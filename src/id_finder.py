@@ -8,8 +8,8 @@ import json
 
 from .exceptions import FileError, MissingArtist, ConnectionError
 from .utils import standarize_name, parse_name_for_request
+from .constants import BASE_ARTIST_URL
 
-BASE_ARTIST_URL = "https://www.billboard.com/artist/"
 ARTIST_ID_HEADER = "data-artist-id"
 
 THIS_FOLDER = os.path.dirname(__file__)
@@ -59,6 +59,7 @@ class ArtistIdFinder():
         artist_url = f"{BASE_ARTIST_URL}{parsed_name}"
 
         return artist_url
+
     def get_artist_wb_content(self,
                               artist: str):
         """

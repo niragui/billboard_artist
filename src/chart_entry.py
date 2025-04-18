@@ -38,8 +38,8 @@ def read_date_from_html(html_code: str):
 class ChartEntry():
     def __init__(self,
                  entry_data: dict) -> None:
-        self.title = entry_data[TITLE_FIELD]
-        self.artist = entry_data[ARTIST_FIELD]
+        self.title = str(entry_data[TITLE_FIELD])
+        self.artist = str(entry_data[ARTIST_FIELD])
 
         self.peak = entry_data[PEAK_FIELD]
         peak_weeks_data = entry_data[PEAK_WEEKS_FIELD]
@@ -54,7 +54,7 @@ class ChartEntry():
         self.weeks = entry_data[WEEKS_FIELD]
 
         self.debut_date = read_date_from_html(entry_data[DEBUT_DATE_FIELD])
-        self.peak_date = read_date_from_html(entry_data[DEBUT_DATE_FIELD])
+        self.peak_date = read_date_from_html(entry_data[PEAK_DATE_FIELD])
 
     def create_json(self):
         """
@@ -77,19 +77,39 @@ class ChartEntry():
         return repr_str
 
     def __eq__(self, other):
-        return self.weeks == other.weeks
+        return self.weeks == other.weeks and self.peak == other.peak and self.peak_weeks == other.peak_weeks
 
     def __lt__(self, other):
-        return self.weeks < other.weeks
+        if self.weeks != other.weeks:
+            return self.weeks < other.weeks
+        elif self.peak != other.peak:
+            return self.peak > other.peak
+        else:
+            return self.peak_weeks < other.peak_weeks
 
     def __le__(self, other):
-        return self.weeks <= other.weeks
+        if self.weeks != other.weeks:
+            return self.weeks <= other.weeks
+        elif self.peak != other.peak:
+            return self.peak >= other.peak
+        else:
+            return self.peak_weeks <= other.peak_weeks
 
     def __gt__(self, other):
-        return self.weeks > other.weeks
+        if self.weeks != other.weeks:
+            return self.weeks > other.weeks
+        elif self.peak != other.peak:
+            return self.peak < other.peak
+        else:
+            return self.peak_weeks > other.peak_weeks
 
     def __ge__(self, other):
-        return self.weeks >= other.weeks
+        if self.weeks != other.weeks:
+            return self.weeks >= other.weeks
+        elif self.peak != other.peak:
+            return self.peak <= other.peak
+        else:
+            return self.peak_weeks >= other.peak_weeks
 
 
 if __name__ == "__main__":
